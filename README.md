@@ -1,2 +1,2 @@
 # enhance
-- just say "computer enhance" and let the magic happen.
+just say "computer enhance" and let the magic happen.
