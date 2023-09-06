@@ -1,18 +1,18 @@
 import cv2
 import time
-import os
+from diffusers import StableDiffusionUpscalePipeline
+import torch
+from io import BytesIO
+from PIL import Image
 
 video_path = './media/name.mp4'
-model = './models/EDSR_x2.pb'
-# parse model metadata
-modelName = model.split('/')[-1].split("_")[0].lower()
-modelScale = model.split("_x")[-1]
-modelScale = int(modelScale[:modelScale.find(".")])
+
+# load model and scheduler
+model_id = "stabilityai/stable-diffusion-x4-upscaler"
+pipeline = StableDiffusionUpscalePipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipeline = pipeline.to("cuda")
 
 cap = cv2.VideoCapture(video_path)
-sr = cv2.dnn_superres.DnnSuperResImpl_create()
-sr.readModel(model)
-sr.setModel(modelName, modelScale)
 
 cap.set(cv2.CAP_PROP_POS_FRAMES, 200)
 success, frame = cap.read()
@@ -20,8 +20,11 @@ if success:
     # use the super resolution model to upscale the image, timing how
     # long it takes
     small_frame = cv2.resize(frame, (frame.shape[1]//2, frame.shape[0]//2))
+    byte_data = BytesIO(small_frame)
+    small_frame = Image.open(small_frame).convert("RGB")
     start = time.time()
-    upscaled = sr.upsample(small_frame)
+    prompt = "hot sexy 4k"
+    upscaled = pipeline(prompt=prompt, image=frame).images[0]
     end = time.time()
     print("[INFO] super resolution took {:.6f} seconds".format(
 	end - start))
