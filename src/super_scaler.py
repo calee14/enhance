@@ -1,7 +1,7 @@
 import cv2
 import time
 import os
-from util import *
+from .util import img_processing
 
 video_path = './media/name.mp4'
 model = './models/ESPCN_x4.pb'
