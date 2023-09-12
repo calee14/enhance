@@ -29,7 +29,7 @@ if success:
 
         # run x4 upscaler
         start = time.time()
-        prompt = "realistic, sharp, vibrant, smooth"
+        prompt = "realistic, no wrinkle, vibrant, smooth"
         upscaled = pipeline(prompt=prompt, image=small_frame).images[0]
         end = time.time()
         print("[INFO] super resolution took {:.6f} seconds".format(

@@ -1,9 +1,10 @@
 import cv2
 import time
 import os
+from util import *
 
 video_path = './media/name.mp4'
-model = './models/LapSRN_x4.pb'
+model = './models/ESPCN_x4.pb'
 # parse model metadata
 modelName = model.split('/')[-1].split("_")[0].lower()
 modelScale = model.split("_x")[-1]
@@ -14,7 +15,7 @@ sr = cv2.dnn_superres.DnnSuperResImpl_create()
 sr.readModel(model)
 sr.setModel(modelName, modelScale)
 
-cap.set(cv2.CAP_PROP_POS_FRAMES, 200)
+cap.set(cv2.CAP_PROP_POS_FRAMES, 250)
 success, frame = cap.read()
 if success:
     # use the super resolution model to upscale the image, timing how
@@ -32,6 +33,7 @@ if success:
 
     if k == 27:         # If escape was pressed exit
         cv2.destroyAllWindows()
+
 # while True:
 #     success, frame = cap.read()
 #     if success:
