@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 def histogram_equalization(image):
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_RGB)
     equalized_image = cv2.equalizeHist(gray_image)
     return equalized_image
 
@@ -33,3 +33,12 @@ def sharpen_image(image):
                        [-1, 9, -1],
                        [-1, -1, -1]])
     return cv2.filter2D(image, -1, kernel)
+
+def default_process(image):
+    # image = histogram_equalization(image)
+    # image = contrast_stretching(image)
+    # image = smooth_image(image)
+    image = sharpen_image(image)
+    image = median_filter(image)
+
+    return image
