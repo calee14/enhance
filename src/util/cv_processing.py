@@ -16,47 +16,25 @@ def contrast_stretching(image, alpha=255, beta=0, norm_type=cv2.NORM_MINMAX, dty
     contrast_stretched_image = cv2.normalize(image, None, alpha, beta, norm_type, dtype)
     return contrast_stretched_image
 
-def sharpen_image(image, kernel=None, iterations=10):
-    # Image Sharpening
-    # img_array = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    # image = Image.fromarray(img_array, 'RGB').convert('RGB')
-    image = ImageEnhance.Sharpness(image).enhance(10)
-
-    # for _ in range(iterations):
-    #     if kernel is None:
-    #         # good for original resized
-    #         kernel = np.array([[-1, -1, -1],
-    #                            [-1, 17, -1],
-    #                            [-1, -1, -1]], np.float32) / 9
-    #         # kernel = np.array([[0, -1, 0],
-    #         #                 [-1, 5, -1],
-    #         #                 [0, -1, 0]])
-    #     sharpened_image = cv2.filter2D(image, -1, kernel=kernel)
-    return image
 
 def unsharpen_image(image, radius=2, amount=2):
     # uses pillows unsharpen filter
     img_array = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = Image.fromarray(img_array, 'RGB').convert('RGB')
     for _ in range(1):
-        image = image.filter(ImageFilter.UnsharpMask(radius=3, percent=196, threshold=3))
-        image = image.filter(ImageFilter.SHARPEN) 
+        image = image.filter(ImageFilter.UnsharpMask(radius=3, percent=196, threshold=5))
+        # image = image.filter(ImageFilter.SHARPEN)
+        for _ in range(2):
+            image = image.filter(ImageFilter.SHARPEN)
 
-       # Sharpen 
-        # image = ImageEnhance.Sharpness(image).enhance(2)
-    #     # Improve contrast
-    #     image = ImageEnhance.Contrast(image).enhance(1)
-        # image = image.filter(ImageFilter.EDGE_ENHANCE)
-        image = image.filter(ImageFilter.SMOOTH_MORE)
-        image = image.filter(ImageFilter.SMOOTH_MORE)
-        image = image.filter(ImageFilter.SMOOTH_MORE)
-        image = image.filter(ImageFilter.SMOOTH_MORE)
+        for _ in range(5):
+            image = image.filter(ImageFilter.SMOOTH_MORE)
 
     image = np.array(image)
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     return image
 
-def brightness(image, alpha=1, beta=5):
+def brightness(image, alpha=1, beta=3):
     # Brightness Adjustment
     brightness_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
     return brightness_image
@@ -82,11 +60,10 @@ def smooth_image(image, method='gaussian', kernel_size=(5, 5), sigma_x=0):
 
 def default_process(image):
     # image = reduce_noise(image)
-    # image = contrast_stretching(image)
+    image = contrast_stretching(image)
     image = unsharpen_image(image)
-    image = smooth_image(image)
-    # image = sharpen_image(image)
-    # image = brightness(image)
+    image = smooth_image(image, method='gaussian')
+    image = brightness(image)
     # image = gamma_correction(image, 1.0)
     return image
     
