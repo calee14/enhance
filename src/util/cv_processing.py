@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from scipy.signal import convolve2d
 from skimage.filters import unsharp_mask
+
 def reduce_noise(image, h=5, hColor=5, templateWindowSize=5, searchWindowSize=20):
     # Apply image enhancements
     # Denoise the image
@@ -28,6 +29,16 @@ def sharpen_image(image, kernel=None, iterations=10):
         sharpened_image = cv2.filter2D(image, -1, kernel=kernel)
     return sharpened_image
 
+def unsharpen_image(image, radius=2, amount=2):
+    # uses skimages unsharpen filter
+    unsharpened_image = unsharp_mask(image, radius, amount, channel_axis=None)
+    for _ in range(2):
+        # unsharpened_image =  unsharp_mask(image, radius, amount, channel_axis=None)
+
+        gaussian_3 = cv2.GaussianBlur(unsharpened_image, (0, 0), 2.0)
+        unsharpened_image = cv2.addWeighted(unsharpened_image, 2.0, gaussian_3, -1.0, 0)
+    return unsharpened_image
+    
 def brightness(image, alpha=1, beta=5):
     # Brightness Adjustment
     brightness_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
@@ -37,6 +48,7 @@ def gamma_correction(image, gamma=1.5):
     # Gamma Correction
     lookup_table = np.array([((i / 255.0) ** gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
     gamma_corrected_image = cv2.LUT(image, lookup_table)
+
     return gamma_corrected_image
 
 def adjust_brightness_contrast(image, alpha=1.2, beta=13):
@@ -55,7 +67,8 @@ def default_process(image):
     # image = reduce_noise(image)
     # image = contrast_stretching(image)
     # image = smooth_image(image, method='median')
-    image = sharpen_image(image)
+    image = unsharpen_image(image)
+    # image = sharpen_image(image)
     # image = brightness(image)
     # image = gamma_correction(image, 1.0)
     return image
