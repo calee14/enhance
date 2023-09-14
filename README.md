@@ -1,5 +1,5 @@
-# enhance
-just say "computer enhance" and let the magic happen.
+# theatre mode
+resize video for 1080p
 # setup
 ```
 python -m venv /path/to/new/virtual/environment
