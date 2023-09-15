@@ -23,14 +23,16 @@ if success:
     
 	# start image processing
     start = time.time()
+    turt = cv2.imread('./media/turtle.jpg')
     frame = cvp.default_process(frame)
+    turt = cvp.default_process(turt)
     end = time.time()
     print("[INFO] image processing took {:.6f} seconds".format(
 	end - start))
 
     # scale image to 4k
     frame = cv2.resize(frame, (frame.shape[1]*3, frame.shape[0]*3))
-    
+    cv2.imshow('turtle', turt)
     # write images to file
     cv2.imwrite('original.png', frame)
 
