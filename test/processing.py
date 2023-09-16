@@ -1,12 +1,15 @@
+import sys
+sys.path.insert(0, '..')
+
 import cv2
 import time
 import os
-from util import img_processing as imgp
-from util import cv_processing as cvp
-from util import pil_processing as pilp
+from src.util import img_processing as imgp
+from src.util import cv_processing as cvp
+from src.util import pil_processing as pilp
 from PIL import Image, ImageFilter, ImageEnhance
 
-video_path = './media/name.mp4'
+video_path = '../media/name.mp4'
 
 cap = cv2.VideoCapture(video_path)
 
@@ -23,7 +26,7 @@ if success:
     
 	# start image processing
     start = time.time()
-    turt = cv2.imread('./media/turtle.jpg')
+    turt = cv2.imread('../media/turtle.jpg')
     frame = cvp.default_process(frame)
     turt = cvp.default_process(turt)
     end = time.time()

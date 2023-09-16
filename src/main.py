@@ -18,6 +18,7 @@ vid_fps = cap.get(cv2.CAP_PROP_FPS)
 frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)*3)
 frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)*3)
 print('New video frame dim:', frame_width, frame_height)
+
 out = cv2.VideoWriter('name_remastered.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 30, (frame_width,frame_height), True)
 # out = cv2.VideoWriter('name_remastered.avi', cv2.VideoWriter_fourcc(*'XVID'), 30, (frame_width,frame_height), True)
 
