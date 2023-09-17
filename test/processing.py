@@ -35,6 +35,7 @@ if success:
 
     # scale image to 4k
     frame = cv2.resize(frame, (frame.shape[1]*3, frame.shape[0]*3))
+    cv2.imwrite('turt.png', turt)
     cv2.imshow('turtle', turt)
     # write images to file
     cv2.imwrite('original.png', frame)

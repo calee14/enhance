@@ -24,10 +24,10 @@ def unsharpen_image(image, radius=2, amount=2):
     for _ in range(1):
         image = image.filter(ImageFilter.UnsharpMask(radius=3, percent=196, threshold=5))
         # image = image.filter(ImageFilter.SHARPEN)
-        for _ in range(2):
+        for _ in range(1): # try 1-2
             image = image.filter(ImageFilter.SHARPEN)
 
-        for _ in range(5):
+        for _ in range(1): # try 1-5
             image = image.filter(ImageFilter.SMOOTH_MORE)
 
     image = np.array(image)
